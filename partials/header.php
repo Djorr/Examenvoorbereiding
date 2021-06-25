@@ -34,7 +34,10 @@ session_start();
         <a class="nav-link" href="/views/hours/">Hours</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/views/department_user/">Departments</a>
+        <a class="nav-link" href="/views/departments/">Departments</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/views/department_user/">Gebruiker Departments</a>
       </li>
     </ul>
   </div>

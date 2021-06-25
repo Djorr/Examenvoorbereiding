@@ -140,13 +140,14 @@ class Database {
     {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = 'UPDATE users SET type_id = :type_id, username = :username, email = :email, password = :password WHERE id = :id';
+        $sql = 'UPDATE users SET type_id = :type_id, username = :username, email = :email, password = :password, updated_at = :updated_at WHERE id = :id';
 
         $this->statement_execute($sql, [
             'type_id' => $type_id,
             'username' => $username,
             'email' => $email,
             'password' => $hashed_password,
+            'updated_at' => date('Y-m-d H:i:s'),
             'id' => $id,
         ]);
     }
@@ -170,7 +171,7 @@ class Database {
 
     public function hours_overview(): array
     {
-        $sql = 'SELECT users.username as user, department_id as department, hours.id, hours.starts_at, hours.ends_at
+        $sql = 'SELECT users.username as user, department_id as department, hours.id, hours.starts_at, hours.ends_at, hours.created_at, hours.updated_at
         FROM hours
         LEFT JOIN users
             ON hours.user_id = users.id';
@@ -190,14 +191,38 @@ class Database {
 
     public function insert_hour(int $user_id, int $department_id, string $starts_at, string $ends_at): void
     {
-        $sql = 'INSERT INTO hours (user_id, department_id, starts_at, ends_at) VALUES (:user_id, :department_id, :starts_at, :ends_at)';
+        $sql = 'INSERT INTO hours (id, user_id, department_id, starts_at, ends_at, created_at, updated_at) VALUES (NULL, :user_id, :department_id, :starts_at, :ends_at, :created_at, NULL)';
 
         $this->statement_execute($sql, [
             'user_id' => $user_id,
             'department_id' => $department_id,
             'starts_at' => $starts_at,
             'ends_at' => $ends_at,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
+    }
+
+    public function update_hour(int $id, string $starts_at, string $ends_at): void
+    {
+        $sql = 'UPDATE hours SET starts_at = :starts_at, ends_at = :ends_at, updated_at = :updated_at WHERE id = :id';
+
+        $this->statement_execute($sql, [
+            'starts_at' => $starts_at,
+            'ends_at' => $ends_at,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'id' => $id,
+        ]);
+    }
+
+    public function get_hour(int $id): array
+    {
+        $sql = 'SELECT * FROM hours WHERE id = :id';
+
+        $statement = $this->statement_execute($sql, [
+            'id' => $id
+        ]);
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function delete_hour(int $id): void
@@ -246,13 +271,68 @@ class Database {
     public function deparments_overview(): array
     {
 
-        $sql = 'SELECT departments.id, departments.name, departments.city, departments.post_code FROM departments';
+        $sql = 'SELECT * FROM departments';
 
         $statement = $this->statement_execute($sql);
 
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $results;
+    }
+
+    public function delete_department(int $id): void
+    {
+        $sql = 'DELETE FROM departments WHERE id = :id';
+
+        $this->statement_execute($sql, [
+            'id' => $id
+        ]);
+    }
+
+
+    public function update_department(int $id, string $name, string $post_code, string $city, string $street, string $house_number): array
+    {
+        $sql = 'UPDATE departments SET name = :name, post_code = :post_code, city = :city, street = :street, number = :number, updated_at = :updated_at WHERE id = :id';
+
+        $statement = $this->statement_execute($sql, [
+            'name' => $name,
+            'post_code' => $post_code,
+            'city' => $city,
+            'street' => $street,
+            'number' => $house_number,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'id' => $id
+        ]);
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function update_user_department(string $department_id, string $user_id): array
+    {
+        $sql = 'UPDATE department_user SET department_id = :department_id WHERE user_id = :user_id';
+
+        $statement = $this->statement_execute($sql, [
+            'department_id' => $department_id,
+            'user_id' => $user_id
+        ]);
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function add_department(string $name, string $post_code, string $city, string $street, string $house_number): void
+    {
+
+        $sql = 'INSERT INTO `departments`
+        VALUES (NULL, :name, :post_code, :city, :street, :house_number, :created_at, NULL)';
+
+        $this->statement_execute($sql, [
+            'name' => $name,
+            'post_code' => $post_code,
+            'city' => $city,
+            'street' => $street,
+            'house_number' => $house_number,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
     private function statement_execute($sql, $params = []): PDOStatement
@@ -263,88 +343,16 @@ class Database {
         return $statement;
     }
 
-    // /* ====== Setup ====== */
-    
-    // public function create_default_users(): void
-    // {
-    //     $admin_hashed_password = password_hash('admin', PASSWORD_BCRYPT);
-    //     $user1_hashed_password = password_hash('user1', PASSWORD_BCRYPT);
-    //     $user2_hashed_password = password_hash('user2', PASSWORD_BCRYPT);
-
-    //     $sql = 'insert into users (type_id, username, email, password)
-    //     values
-    //         (:admin_type_id, :admin_user, :admin_email, :admin_pass),
-    //         (:user_type_id, :user1_user, :user1_email, :user1_pass),
-    //         (:user_type_id, :user2_user, :user2_email, :user2_pass)';
-
-    //     $this->statement_execute($sql, [
-    //         'admin_type_id' => 1,
-    //         'admin_user' => 'admin',
-    //         'admin_email' => 'admin@example.org',
-    //         'admin_pass' => $admin_hashed_password,
-
-    //         'user_type_id' => 2,
-
-    //         'user1_user' => 'user1',
-    //         'user1_email' => 'user1@example.org',
-    //         'user1_pass' => $user1_hashed_password,
-
-    //         'user2_user' => 'user2',
-    //         'user2_email' => 'user2@example.org',
-    //         'user2_pass' => $user2_hashed_password
-    //     ]);
-    // }
-
-    // public function create_default_hours(): void
-    // {
-    //     $sql = 'insert into hours (user_id, department_id, starts_at, ends_at)
-    //     values
-    //         (:user_id1, :department_id1, :starts_at1, :ends_at1),
-    //         (:user_id2, :department_id2, :starts_at2, :ends_at2);';
-
-    //     $this->statement_execute($sql, [
-    //         'user_id1' => 2,
-    //         'department_id1' => 1,
-    //         'starts_at1' => '2021-06-03 10:30:00',
-    //         'ends_at1' => '2021-06-03 12:30:00',
-
-    //         'user_id2' => 3,
-    //         'department_id2' => 2,
-    //         'starts_at2' => '2021-06-07 08:00:00',
-    //         'ends_at2' => '2021-06-11 16:00:00'
-    //     ]);
-    // }
-
-    // public function assign_default_users_to_departments(): void
-    // {
-    //     $sql = 'insert into department_user
-    //     values
-    //         (:department1, :user1),
-    //         (:department1, :user2),
-    //         (:department2, :user1),
-    //         (:department2, :user2);';
-
-    //     $this->statement_execute($sql, [
-    //         'department1' => 1,
-    //         'user1' => 2,
-
-    //         'department2' => 2,
-    //         'user2' => 3
-    //     ]);
-    // }
-
-    // /* ====== Users ====== */
-
 
     public function get_department(int $id): array
     {
-        $sql = 'SELECT id, name FROM departments WHERE id = :id';
+        $sql = 'SELECT name, post_code, city, street, number FROM departments WHERE id = :id';
 
         $statement = $this->statement_execute($sql, [
             'id' => $id
         ]);
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function get_users_by_department(int $department_id): array
@@ -361,7 +369,7 @@ class Database {
             'department_id' => $department_id
         ]);
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
     public function add_user_to_department(string $department_id, string $user_id): void

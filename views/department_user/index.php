@@ -19,7 +19,7 @@ if ($_SESSION['is_admin']) {
 		<tr>
 			<td><?= $entry['department_name'] ?></td>
 			<td><?= $entry['username'] ?></td>
-			<td><a href="/views/department_user/edit.php?department_id=<?= $entry['id'] ?>">Bewerken</a></td>
+			<td><a href="/views/department_user/edit.php?department_id=<?= $entry['id'] ?>&user_id=<?= $entry['user_id'] ?>">Bewerken</a></td>
 			<td><a href="/views/department_user/remove_user_from_department.php?department_id=<?= $entry['id'] ?>&user_id=<?= $entry['user_id'] ?>">Verwijderen</a></td>
 		</tr>
 		<?php } //endforeach department_user ?>

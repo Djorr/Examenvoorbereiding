@@ -3,7 +3,7 @@
 require_once '../../partials/header.php';
 
 $department = $db->deparments_overview();
-$users = $db->users_overview();
+$user = $db->get_user($_GET['user_id']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
@@ -33,11 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                             </div>
                             <div class="form-group">
                                 <label for="user" class="text-info" >Gebruiker:</label><br>
-                                <select name="user_id">
-                                    <?php foreach ($users as $user) { ?>
-                                        <option value="<?= $user['username'] ?>"><?= $user['username'] . ' - ' . $user['email']?></option>
-                                    <?php } ?>
-                                </select>
+                                <input type="text" name="user_id" value="<?= $user['username'] . ' - ' . $user['email'] ?>" class="form-control" readonly>
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="Update profiel">

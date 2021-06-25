@@ -7,12 +7,14 @@ if (array_key_exists('is_admin', $_SESSION) && $_SESSION['is_admin']) {
 
 ?>
 
-<table>
+<table class="table table-bordered">
 	<tr>
 		<th>Gebruiker</th>
 		<th>Afdeling</th>
 		<th>Begint op</th>
 		<th>Eindigt op</th>
+		<th>Created at</th>
+		<th>Updated at</th>
         <th colspan="2">Beheer</th>
 	</tr>
 	<?php foreach ($hours_overview as $hour) { ?>
@@ -21,7 +23,9 @@ if (array_key_exists('is_admin', $_SESSION) && $_SESSION['is_admin']) {
 		<td><?= $hour['department'] ?></td>
 		<td><?= $hour['starts_at'] ?></td>
 		<td><?= $hour['ends_at'] ?></td>
-        <td><a href="/views/hours/edit.php?hour_id=<?= $hour['id'] ?>">Bewerken</a></td>
+		<td><?= $hour['created_at'] ?></td>
+		<td><?= $hour['updated_at'] ?></td>
+        <td><a href="/views/hours/edit.php?hour_id=<?= $hour['id'] ?>&user_name=<?= $hour['user'] ?>&department_name=<?= $hour['department'] ?>">Bewerken</a></td>
         <td><a href="/views/hours/delete_hour.php?hour_id=<?= $hour['id'] ?>">Verwijderen</a></td>
 	</tr>
 	<?php }	// endforeach ?>

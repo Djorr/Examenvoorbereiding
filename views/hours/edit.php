@@ -1,38 +1,43 @@
 <?php
 
-require_once '../../classes/database.php';
+require_once '../../partials/header.php';
 
-$db = new Database();
-$users_overview = $db->users_overview();
+$hour = $db->get_hour($_GET['hour_id']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-	$starts_at = $_POST['start_date'] . ' ' . $_POST['start_time'];
-	$ends_at = $_POST['end_date'] . ' ' . $_POST['end_time'];
 
-	$db->update_hour($_POST['user_id'], 1, $starts_at, $ends_at);
+    $starts_at = $_POST['start_date'] . ' ' . $_POST['start_time'];
+    $ends_at = $_POST['end_date'] . ' ' . $_POST['end_time'];
 
-	// header('Location: ../hours');
+	$db->update_hour($_GET['hour_id'], $starts_at, $ends_at);
+
+	header('Location: /views/hours/');
 }
 
 ?>
 
 <form method="post">
-	<label for="user_id">Gebruiker:</label><br>
-	<select id="user_id" name="user_id" autofocus>
-		<?php foreach ($users_overview as $user) { ?>
-		<option value="<?= $user['id'] ?>"><?= $user['username'] . ' - ' . $user['email'] ?></option>
-		<?php } ?>
-	</select><br>
+    <div class="form-group">
+        <label for="afdeling" class="text-info" >Gebruiker:</label><br>
+        <input type="text" name="afdeling" value="<?= $_GET['user_name'] ?>" class="form-control" readonly>
+    </div>
+    <div class="form-group">
+        <label for="afdeling" class="text-info" >Afdeling:</label><br>
+        <input type="text" name="afdeling" value="<?= $_GET['department_name'] ?>" class="form-control" readonly>
+    </div>
 
-	<!-- Zoals ik hierboven aangaf; HTML heeft alleen een losse date-input en time-input, niet 'samen' -->
-	<label for="start_date">Van:</label><br>
-	<input id="start_date" type="date" name="start_date" value="<?= date('Y-m-d') ?>" required>
-	<input type="time" name="start_time" value="<?= date('H:i') ?>" required><br>
+        <label for="start_date">Van:</label><br>
+    <input id="start_date" type="date" name="start_date" value="<?= date('Y-m-d') ?>" required>
+    <input type="time" name="start_time" value="<?= date('H:i') ?>" required><br>
 
-	<label for="end_date">Tot:</label><br>
-	<input id="end_date" type="date" name="end_date" value="<?= date('Y-m-d') ?>" required>
-	<input type="time" name="end_time" value="<?= date('H:i') ?>" required><br>
+    <label for="end_date">Tot:</label><br>
+    <input id="end_date" type="date" name="end_date" value="<?= date('Y-m-d') ?>" required>
+    <input type="time" name="end_time" value="<?= date('H:i') ?>" required><br>
 
-	<input type="submit" value="Toevoegen">
+    <input type="submit" value="Update">
 </form>
+
+<!-- Het HTML-formulier die je al had laat je hier. -->
+
+<?php require_once '../../partials/footer.php'; ?>
