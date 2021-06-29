@@ -1,5 +1,6 @@
 <?php
 
+
 class Database {
 
     private $dbhost;
@@ -9,7 +10,6 @@ class Database {
     private $dbcharset;
 
     private $pdo;
-
 
     /**
      * Connects to the database

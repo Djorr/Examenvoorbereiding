@@ -7,7 +7,7 @@ $user = $db->get_user($_GET['user_id']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-	$db->update_user_department($_POST['department_id'], $_POST['user_id']);
+	$db->update_user_department($_POST['department_id'], $_GET['user_id']);
 
 	header('Location: /views/department_user/');
 }
