@@ -39,13 +39,17 @@ class Database {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $sql = 'INSERT INTO users VALUES 
-            (NULL, :type_id, :username, :email, :password, :created_at, NULL)';
+            (NULL, :type_id, :username, :email, :password, :firstname, :tussenvoegsel, :lastname, :phonenumber, :created_at, NULL)';
 
         $this->statement_execute($sql, [
             'type_id' => $type_id,
             'username' => $username,
             'email' => $email,
             'password' => $hashed_password,
+            'firstname' => '',
+            'tussenvoegsel' => '',
+            'lastname' => '',
+            'phonenumber' => '',
             'created_at' => date('Y-m-d H:i:s')
         ]);
 
@@ -57,13 +61,17 @@ class Database {
         $hashed_password = password_hash('admin', PASSWORD_DEFAULT);
 
         $sql = 'INSERT INTO users VALUES
-            (NULL, :type_id, :username, :email, :password, :created_at, NULL)';
+            (NULL, :type_id, :username, :email, :password, :firstname, :tussenvoegsel, :lastname, :phonenumber, :created_at, NULL)';
 
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
             'type_id' => 1,
             'username' => 'admin',
             'email' => 'admin@example.org',
+            'firstname' => '',
+            'tussenvoegsel' => '',
+            'lastname' => '',
+            'phonenumber' => '',
             'password' => $hashed_password,
             'created_at' => date('Y-m-d H:i:s')
         ]);
@@ -136,7 +144,7 @@ class Database {
 
     public function get_user(int $id): array
     {
-        $sql = 'SELECT type_id, username, email FROM users WHERE id = :id';
+        $sql = 'SELECT type_id, username, email, firstname, lastname, tussenvoegsel, phonenumber FROM users WHERE id = :id';
 
         $statement = $this->statement_execute($sql, [
             'id' => $id
@@ -145,17 +153,21 @@ class Database {
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function update_user(int $id, int $type_id, string $username, string $email, string $password): void
+    public function update_user(int $id, int $type_id, string $username, string $email, string $password, string $firstname, string $tussenvoegsel, string $lastname, int $phonenumber): void
     {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = 'UPDATE users SET type_id = :type_id, username = :username, email = :email, password = :password, updated_at = :updated_at WHERE id = :id';
+        $sql = 'UPDATE users SET type_id = :type_id, username = :username, email = :email, password = :password, firstname = :firstname, tussenvoegsel = :tussenvoegsel, lastname = :lastname, phonenumber = :phonenumber, updated_at = :updated_at WHERE id = :id';
 
         $this->statement_execute($sql, [
             'type_id' => $type_id,
             'username' => $username,
             'email' => $email,
             'password' => $hashed_password,
+            'firstname' => $firstname,
+            'tussenvoegsel' => $tussenvoegsel,
+            'lastname' => $lastname,
+            'phonenumber' => $phonenumber,
             'updated_at' => date('Y-m-d H:i:s'),
             'id' => $id,
         ]);

@@ -28,10 +28,28 @@ $user = $db->get_user(isset($_SESSION['logged_in_as']));
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-3">
+                    <h6 class="mb-0">Volledige naam</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    <?= $user['firstname'] . ' ' . $user['tussenvoegsel'] . ' ' . $user['lastname']?> 
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
                     <h6 class="mb-0">Email</h6>
                   </div>
                   <div class="col-sm-9 text-secondary">
                     <?= $user['email'] ?>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Telefoonnummer</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    <?= '+' . $user['phonenumber'] ?>
                   </div>
                 </div>
                 <hr>
