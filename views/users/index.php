@@ -1,25 +1,11 @@
 <?php
 
-require_once '../../partials/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 
 if ($_SESSION['is_admin']) {
 	$users = $db->users_overview();
 
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Examenvoorbereiding</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
-
-<a href="../../classes/logout.php">Uitloggen</a>
 
 <table class="table table-bordered">
     <thead>
@@ -44,12 +30,9 @@ if ($_SESSION['is_admin']) {
 </table>
 
 <br>
-<a class="button" href="../users/create.php">Toevoegen</a>
+<a class="button" href="views/users/create.php">Toevoegen</a>
 <a href="/exports/user_overview.php">Downloaden als spreadsheet</a>
 
 <?php } //endif ?>
 
-</body>
-</html>
-
-<?= require_once '../../partials/footer.php'; ?>
+<?= require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>

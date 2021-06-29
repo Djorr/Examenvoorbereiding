@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../partials/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 
 if ($_SESSION['is_admin']) {
 	$department_user = $db->department_user_overview();
@@ -35,4 +35,4 @@ if ($_SESSION['is_admin']) {
 
 ?>
 
-<?= require_once '../../partials/footer.php'; ?>
+<?= require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>

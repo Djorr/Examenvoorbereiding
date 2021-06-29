@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../partials/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 
 $department = $db->get_department($_GET['department_id']);
 

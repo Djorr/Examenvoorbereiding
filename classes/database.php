@@ -48,6 +48,8 @@ class Database {
             'password' => $hashed_password,
             'created_at' => date('Y-m-d H:i:s')
         ]);
+
+        header('Location: /inloggen/index.php');
     }
 
     public function create_admin()
@@ -65,6 +67,8 @@ class Database {
             'password' => $hashed_password,
             'created_at' => date('Y-m-d H:i:s')
         ]);
+
+        header('Location: /inloggen/index.php');
     }
 
     public function login(string $username, string $password): void
@@ -81,10 +85,15 @@ class Database {
         if (!empty($results) && password_verify($password, $results['password']))
         {
             session_start();
+            $_SESSION['loggedin'] = true;
             $_SESSION['logged_in_as'] = $username;
             $_SESSION['is_admin'] = $results['type_id'] === '1';
 
-            header('Location: views/users/index.php');
+            if ($_SESSION['is_admin']) {
+                header('Location: /views/users/index.php');
+            } else {
+                header('Location: /dashboard/index.php');
+            }
         }
         else
             header('Location: login_incorrect.html');

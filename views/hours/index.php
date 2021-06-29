@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../partials/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] .  '/partials/header.php';
 
 if (array_key_exists('is_admin', $_SESSION) && $_SESSION['is_admin']) {
 	$hours_overview = $db->hours_overview();
@@ -32,7 +32,7 @@ if (array_key_exists('is_admin', $_SESSION) && $_SESSION['is_admin']) {
 </table>
 
 <br>
-<a class="button" href="../../views/hours/create.php">Toevoegen</a>
+<a class="button" href="/views/hours/create.php">Toevoegen</a>
 
 <?php
 
@@ -40,4 +40,4 @@ if (array_key_exists('is_admin', $_SESSION) && $_SESSION['is_admin']) {
 
 ?>
 
-<?= require_once '../../partials/footer.php'; ?>
+<?= require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>

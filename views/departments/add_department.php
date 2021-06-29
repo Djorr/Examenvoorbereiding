@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../partials/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' )
 {

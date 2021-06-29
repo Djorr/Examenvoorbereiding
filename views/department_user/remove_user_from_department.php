@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../classes/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/database.php';
 
 $db = new Database();
 

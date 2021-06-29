@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-    require_once '../../classes/database.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] .  '/classes/database.php';
     $db = new Database();
 $user_types = $db->get_user_types();
 

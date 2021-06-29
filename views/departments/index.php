@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../partials/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/header.php';
 
 if ($_SESSION['is_admin']) {
 	$departments = $db->deparments_overview();
@@ -37,7 +37,7 @@ if ($_SESSION['is_admin']) {
 </table>
 
 <br>
-<a class="button" href="../departments/add_department.php">Toevoegen</a>
+<a class="button" href="views/departments/add_department.php">Toevoegen</a>
 
 <?php
 
@@ -45,4 +45,4 @@ if ($_SESSION['is_admin']) {
 
 ?>
 
-<?= require_once '../../partials/footer.php'; ?>
+<?= require_once $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>
