@@ -38,7 +38,7 @@ session_start();
       </li>
       <?php } ?>
 
-      <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?>
+      <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == true) { ?>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Beheerder

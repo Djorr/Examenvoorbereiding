@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                             </div>
                             <div class="form-group">
                                 <label for="phonenumber" class="text-info" >Telefoonnummer:</label><br>
-                                <input type="text" name="phonenumber" placeholder="Telefoonnummer" value="<?= $user['phonenumber'] ?>" class="form-control">
+                                <input type="number" name="phonenumber" placeholder="Telefoonnummer" value="<?= $user['phonenumber'] ?>" class="form-control">
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="Update profiel">
